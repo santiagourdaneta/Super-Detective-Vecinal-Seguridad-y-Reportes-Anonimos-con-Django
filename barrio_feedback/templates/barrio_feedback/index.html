@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Detective Vecinal: Seguridad y Reportes Anónimos en el Barrio</title>
+    <meta name="description" content="Envía reportes de seguridad anónimos a tu Super Detective Vecinal. Protege tu comunidad y mejora la seguridad de tu barrio con inteligencia artificial.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+     <div class="auth-links" style="text-align: right; margin-bottom: 10px;">
+        {% if user.is_authenticated %}
+            <span style="margin-right: 15px;">¡Hola, {{ user.username }}!</span>
+<form action="{% url 'logout' %}" method="post" style="display: inline;">
+    {% csrf_token %}
+    <button type="submit" style="background-color: #dc3545; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">Cerrar Sesión</button>
+</form>
+        {% else %}
+            <a href="{% url 'login' %}" style="background-color: #007bff; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; margin-right: 10px;">Iniciar Sesión</a>
+            <a href="{% url 'register' %}" style="background-color: #6c757d; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none;">Registrarse</a>
+        {% endif %}
+    </div>
+    <div class="container">
+        <h1>🕵️‍♂️ Mi Super Detective Vecinal 🕵️‍♀️</h1>
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+        <p>¡Ayúdanos a mantener el barrio seguro! Envía un mensaje si ves algo que te preocupa.</p>
+        <p>Tu mensaje será analizado por nuestro robot inteligente y luego se mostrará de forma anónima para que todos aprendamos y estemos más seguros.</p>
+
+        <h2>Enviar un Nuevo Mensaje</h2>
+        <form method="post" action="{% url 'send_feedback' %}">
+            {% csrf_token %} <label for="id_destinatario">¿Para quién es el mensaje? (opcional):</label>
+            <input type="text" id="id_destinatario" name="destinatario" placeholder="Ej: Comité de Seguridad, vecinos de la calle Sol, etc.">
+
+            <label for="id_mensaje_original">Tu mensaje (el robot lo hará anónimo):</label>
+            <textarea id="id_mensaje_original" name="mensaje_original" rows="5" placeholder="Vi un auto rojo sospechoso, patente ABC-123, rondando por la calle Los Álamos a las 3 PM." required></textarea>
+
+           
+            <button type="submit">Enviar Mensaje Secreto</button>
+        </form>
+ <section class="map-section">
+       
+        <h2>Mensajes Procesados por el Robot</h2>
+        {% if feedbacks %}
+            {% for feedback in feedbacks %}
+                {% if feedback.procesado %}
+                    <div class="feedback-item">
+                        <p><strong>Para:</strong> {{ feedback.destinatario|default:"Nadie específico" }}</p>
+                        <p><strong>Fecha:</strong> {{ feedback.fecha_envio|date:"d/m/Y H:i" }}</p>
+                        <p {% if "ALERTA" in feedback.mensaje_anonimo_y_constructivo %}class="alert-message"{% endif %}>
+                            <strong>Mensaje del Robot:</strong> {{ feedback.mensaje_anonimo_y_constructivo }}
+                        </p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Todavía no hay mensajes procesados por el robot. ¡Envía el primero!</p>
+        {% endif %}
+    </div>
+ 
+
+     
+</body>
+</html>

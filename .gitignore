@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.cache/
+.pytest_cache/
+htmlcov/
+.ipynb_checkpoints
+.mypy_cache/
+.dmypy.json
+celerybeat-schedule/
+*.egg-info/
+.hatch/
+.ruff_cache/
+
+# Django
+*.log
+media/             # Directorio para archivos subidos por usuarios (uploads), a menudo se maneja por separado
+static/            # Archivos estáticos recolectados por `collectstatic`
+
+# IDEs
+.vscode/
+.idea/             # PyCharm, IntelliJ IDEA
+*.code-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env               # Archivo de variables de entorno (¡MUY IMPORTANTE NO SUBIR!)
+.env.local
+.flaskenv
+
+# Editor specific
+*~
+*.swp
+.DS_Store
